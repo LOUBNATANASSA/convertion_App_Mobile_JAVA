@@ -2,6 +2,7 @@ package com.example.azzouz;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         Button buttonconvert = findViewById(R.id.buttonconvert);
         TextView txtresultat = findViewById(R.id.txtresultat);
         Spinner spinner = findViewById(R.id.spinner);
+        // Options du spinner
+        String[] bases = {"Binaire", "Hexadécimal", "Octal"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item,bases );
+        spinner.setAdapter(adapter);
 
         buttonconvert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +45,21 @@ public class MainActivity extends AppCompatActivity {
                     txtresultat.setText("00.00");
                 }else {
                     int decimal = Integer.parseInt(txtnumber);
-                    String binary = Integer.toBinaryString(decimal);
-                    txtresultat.setText(binary);
+                    String convertednumber ="";
+                    String selectedbase = spinner.getSelectedItem().toString();
+
+
+                    if(selectedbase.equals("Binaire")){
+                        convertednumber = Integer.toBinaryString(decimal);
+                    } else if (selectedbase.equals("Hexadécimal")) {
+                        convertednumber = Integer.toHexString(decimal).toUpperCase();
+                    } else if (selectedbase.equals("Octal")) {
+                        convertednumber = Integer.toOctalString(decimal);
+                    }else {
+                        convertednumber = "Error";
+                    }
+
+                    txtresultat.setText(convertednumber);
 
                 }
             }
